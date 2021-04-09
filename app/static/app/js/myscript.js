@@ -24,6 +24,18 @@ $('#slider1, #slider2, #slider3').owlCarousel({
 })
 
 $('.plus-cart').click(function(){
+    console.log("Plus Clicked")
     var id = $(this).attr("pid").toString();
-    console.log(id)
+    // console.log(id) 
+    $.ajax({
+        type: "GET",
+        url: "/pluscart",
+        data:{
+            prod_id: id
+        },
+        success: function(data){
+            console.log(data)
+            console.log("Success")
+        }
+    })
 })
