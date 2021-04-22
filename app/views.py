@@ -5,7 +5,8 @@ from .forms import CustomerRegistrationForm, CustomerProfileForm
 from django.contrib import messages
 from django.db.models import Q
 from django.http import JsonResponse
-
+from django.contrib.auth.decorators import login_required #for functions based views
+from django.utils.decorators import method_decorator #for class based views
 
 class ProductView(View):
     def get(self, request):
@@ -21,9 +22,12 @@ class ProductView(View):
 class ProductDetailView(View):
     def get(self, request, pk):
         product = Product.objects.get(pk=pk)
-        return render(request, 'app/productdetail.html', {'product': product})
+        item_in_cart = False
+        if request.user.is_authenticated:
+            item_in_cart = Cart.objects.filter(Q(product=product.id) & Q(user=request.user)).exists()
+        return render(request, 'app/productdetail.html', {'product': product,'item_in_cart':item_in_cart})
 
-
+@login_required
 def add_to_cart(request):
     user = request.user  # fetching current users
     # fetching product id from product_detail page
@@ -33,13 +37,13 @@ def add_to_cart(request):
     return redirect('/cart')
     # return render(request, 'app/addtocart.html')
 
-
+@login_required
 def show_cart(request):
     if request.user.is_authenticated:
         user = request.user
         cart = Cart.objects.filter(user=user)
         amount = 0.0
-        shipping_amount = 70.0
+        shipping_amount = 10.0
         total_amount = 0.0
         #list comprehension to store cart data of authenticated user
         cart_product = [p for p in Cart.objects.all() if p.user == user]
@@ -53,41 +57,84 @@ def show_cart(request):
         else:
             return render(request, 'app/emptycart.html')
 
+
 def plus_cart(request):
     if request.method == "GET":
-        prod_id = request.GET['prod_id']
+        prod_id = request.GET['prod_id'] #getting info stored in prod_id from myscript.js
         print(prod_id)
         c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
         c.quantity+=1
         c.save()
         amount = 0.0
-        shipping_amount = 70.0
-        total_amount = 0.0
+        shipping_amount = 10.0
         cart_product = [p for p in Cart.objects.all() if p.user == request.user]
         for p in cart_product:
             temp_amount = (p.quantity * p.product.discounted_price)
             amount+= temp_amount
-            total_amount = amount + shipping_amount
 
         data = {
             'quantity':c.quantity,
-            'amount' :amount,
-            'totalamount':total_amount
+            'amount':amount,
+            'totalamount':amount + shipping_amount
             }
         return JsonResponse(data)
+
+
+def minus_cart(request):
+    if request.method == "GET":
+        prod_id = request.GET['prod_id'] #getting info stored in prod_id from myscript.js
+        print(prod_id)
+        c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
+        c.quantity-=1
+        c.save()
+        amount = 0.0
+        shipping_amount = 10.0
+        cart_product = [p for p in Cart.objects.all() if p.user == request.user]
+        for p in cart_product:
+            temp_amount = (p.quantity * p.product.discounted_price)
+            amount+= temp_amount
+
+        data = {
+            'quantity':c.quantity,
+            'amount':amount,
+            'totalamount':amount + shipping_amount
+            }
+        return JsonResponse(data)
+
+@login_required
+def remove_cart(request):
+    if request.method == "GET":
+        prod_id = request.GET['prod_id'] #getting info stored in prod_id from myscript.js
+        print(prod_id)
+        c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
+        c.delete()
+        amount = 0.0
+        shipping_amount = 10.0
+        cart_product = [p for p in Cart.objects.all() if p.user == request.user]
+        for p in cart_product:
+            temp_amount = (p.quantity * p.product.discounted_price)
+            amount+= temp_amount
+        data = {
+            'amount':amount,
+            'totalamount':amount + shipping_amount
+
+            }
+        return JsonResponse(data)
+
 
 def buy_now(request):
     return render(request, 'app/buynow.html')
 
-
+@login_required
 def address(request):
     # filtering customers on the basis of current users
     add = Customer.objects.filter(user=request.user)
     return render(request, 'app/address.html', {'add': add})
 
-
+@login_required
 def orders(request):
-    return render(request, 'app/orders.html')
+    op = OrderPlaced.objects.filter(user=request.user)
+    return render(request, 'app/orders.html',{'order_placed':op})
 
 
 def mobile(request, data=None):
@@ -116,6 +163,7 @@ def bottomwears(request):
     return render(request, 'app/bottomwears.html', {'bottomwears': bottomwears})
 
 
+
 class CustomerRegistrationView(View):
     def get(self, request):
         form = CustomerRegistrationForm()
@@ -129,11 +177,35 @@ class CustomerRegistrationView(View):
             form.save()
         return render(request, 'app/customerregistration.html', {'form': form})
 
-
+@login_required
 def checkout(request):
-    return render(request, 'app/checkout.html')
+    user = request.user #6:0:1
+    add = Customer.objects.filter(user=user)
+    cart_items = Cart.objects.filter(user=user)
+    amount = 0.0
+    shipping_amount = 10.0 
+    totalamount = 0.0
+    cart_product = [p for p in Cart.objects.all() if p.user == request.user]
+    if cart_product:
+        for p in cart_product:
+            temp_amount = (p.quantity * p.product.discounted_price)
+            amount+= temp_amount
+            totalamount = amount + shipping_amount
+    return render(request, 'app/checkout.html',{'add':add, 'totalamount':totalamount,'cart_items':cart_items})
 
+@login_required
+def payment_done(request):
+    user = request.user
+    custid = request.GET.get('custid')
+    customer = Customer.objects.get(id=custid)
+    cart = Cart.objects.filter(user=user)
 
+    for c in cart:
+        OrderPlaced(user=user, customer=customer, product=c.product, quantity=c.quantity).save()
+        c.delete()
+    return redirect("orders")
+
+@method_decorator(login_required, name='dispatch')
 class ProfileView(View):
     def get(self, request):
         form = CustomerProfileForm()

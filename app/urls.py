@@ -14,7 +14,11 @@ urlpatterns = [
 
     path('cart/', views.show_cart, name='showcart'),
 
-    path('pluscart/', views.plus_cart, name='pluscart'),
+    path('pluscart/', views.plus_cart),
+
+    path('minuscart/', views.minus_cart), 
+
+    path('removecart/', views.remove_cart),
 
     path('add-to-cart/', views.add_to_cart, name='add-to-cart'),
 
@@ -29,6 +33,9 @@ urlpatterns = [
     path('mobile/', views.mobile, name='mobile'),
 
     path('mobile/<slug:data>', views.mobile, name='mobiledata'),
+
+     path('checkout/', views.checkout, name='checkout'),
+     path('paymentdone/', views.payment_done, name='paymentdone'),
 
     # view is not created for login, in built authentication consists of login and logout as well
     path('accounts/login/', auth_views.LoginView.as_view
@@ -57,7 +64,7 @@ urlpatterns = [
     path('registration/', views.CustomerRegistrationView.as_view(),
          name='customerregistration'),
 
-    path('checkout/', views.checkout, name='checkout'),
+
     path('topwears/', views.topwears, name='topwears'),
     path('bottomwears/', views.bottomwears, name='bottomwears'),
 
