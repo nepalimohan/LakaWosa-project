@@ -10,23 +10,28 @@ from django.utils.decorators import method_decorator #for class based views
 
 class ProductView(View):
     def get(self, request):
+        total_items = 0
         # the given filters the products on the basis of category TW
         topwears = Product.objects.filter(category='TW')  # TW=Top wear
         bottomwears = Product.objects.filter(category='BW')
         mobiles = Product.objects.filter(category='M')
+        if request.user.is_authenticated:
+            total_items = len(Cart.objects.filter(user=request.user))
         context = {'topwears': topwears,
-                   'bottomwears': bottomwears, 'mobiles': mobiles}
+                   'bottomwears': bottomwears, 'mobiles': mobiles, 'total_items':total_items}
         return render(request, 'app/home.html', context)
 
 
 class ProductDetailView(View):
     def get(self, request, pk):
+        total_items = 0
         product = Product.objects.get(pk=pk)
         item_in_cart = False
         if request.user.is_authenticated:
+            total_items = len(Cart.objects.filter(user=request.user))
             item_in_cart = Cart.objects.filter(Q(product=product.id) & Q(user=request.user)).exists()
-        return render(request, 'app/productdetail.html', {'product': product,'item_in_cart':item_in_cart})
-
+        context = {'product': product,'item_in_cart':item_in_cart,'total_items':total_items}
+        return render(request, 'app/productdetail.html', context)
 @login_required
 def add_to_cart(request):
     user = request.user  # fetching current users
