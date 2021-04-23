@@ -25,7 +25,7 @@
     <div class="col-sm-4 offset-sm-1">
       <h4>Select Shipping Address</h4>
       <hr />
-      <form action="/paymentdone">
+      <form action="/paymentdone" id="myform">
         {% for address in add %} 
         <div class="card">
           <div class="card-body">
@@ -39,12 +39,49 @@
         </div>
         {% endfor %}
         <div class="text-end">
-          <button type="submit" class="btn btn-warning mt-3 px-5 fw-bold">
+          <!-- <button type="submit" class="btn btn-warning mt-3 px-5 fw-bold">
             Continue
-          </button>
+          </button> -->
+
+          <!-- Set up a container element for the button -->
+          <div id="paypal-button-container"></div>
         </div>
       </form>
     </div>
   </div>
 </div>
 {% endblock main-content %}
+{% block payment-gateway %} 
+<!-- Include the PayPal JavaScript SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=AVSTpBRHIG62nMYN8DvRNwDAyJ911gb2QG31HJNbyxedwK8YW2Ui65NCxqBaUNuI5CqNAcBCxTvxKX18&currency=USD"></script>
+
+<script>
+    // Render the PayPal button into #paypal-button-container
+    paypal.Buttons({
+
+        // Set up the transaction
+        createOrder: function(data, actions) {
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: '{{totalamount}}'
+                    }
+                }]
+            });
+        },
+
+        // Finalize the transaction
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+                // Show a success message to the buyer
+                alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                document.getElementById("myform").submit(); 
+                // this submits the form and data is saved in database in OrderPlaced table
+            });
+        }
+
+
+    }).render('#paypal-button-container');
+</script>
+{% endblock payment-gateway %}
+
