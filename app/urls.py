@@ -14,6 +14,8 @@ urlpatterns = [
 
     path('cart/', views.show_cart, name='showcart'),
 
+    path('search/', views.search, name='search'),
+
     path('pluscart/', views.plus_cart),
 
     path('minuscart/', views.minus_cart), 

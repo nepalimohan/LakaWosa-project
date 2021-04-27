@@ -4,7 +4,7 @@ from .models import Customer, Product, Cart, OrderPlaced
 from .forms import CustomerRegistrationForm, CustomerProfileForm
 from django.contrib import messages
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib.auth.decorators import login_required #for functions based views
 from django.utils.decorators import method_decorator #for class based views
 
@@ -232,3 +232,19 @@ class ProfileView(View):
                 request, 'Profile has been Updated Successfully!!')
         return render(request, 'app/profile.html', {'form': form, 'active': 'btn-primary'})
 
+def search(request):
+    # if 'search' in request.GET:
+    #     search = request.GET['search']
+    #     searched_product = Product.objects.filter(brand=search)
+    # else:
+    #     searched_product= Product.objects.all()
+    # searched_product = Product.objects.all()
+    query = request.GET['query']
+    searched_product = Product.objects.filter(title__contains=query)
+    if searched_product: 
+        context ={'searched_product':searched_product}
+        return render(request, 'app/search.html', context)
+    else:
+        return render(request,'app/search.html')
+
+    

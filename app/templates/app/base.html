@@ -23,14 +23,14 @@
     <!--Custom CSS-->
     <link rel="stylesheet" href="{% static 'app/css/style.css' %}" />
 
-    <title>Ecomm | {% block title %} {% endblock title %}</title>
+    <title>LakaWosa | {% block title %} {% endblock title %}</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
         <a class="navbar-brand" href="/">
           <!-- <img src="% static 'app/static/app/images/logo-newang.png' %"> -->
-          Ecomm</a
+          LakaWosa</a
         >
         <button
           class="navbar-toggler"
@@ -52,18 +52,18 @@
               <a
                 class="nav-link dropdown-toggle text-white"
                 href="#"
-                id="electronicsDropdown"
+                id="menDropdown"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Electronics
+                Men
               </a>
               <ul class="dropdown-menu" aria-labelledby="electronicsDropdown">
                 <li>
-                  <a class="dropdown-item" href="{% url 'mobile' %}">Mobile</a>
+                  <a class="dropdown-item" href="{% url 'mobile' %}">Top Wear</a>
                 </li>
-                <li><a class="dropdown-item" href="#">Laptop</a></li>
+                <li><a class="dropdown-item" href="#">Bottom Wear</a></li>
               </ul>
             </li>
             <li class="nav-item dropdown">
@@ -75,16 +75,18 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                Fashion
+                Women
               </a>
-              <ul class="dropdown-menu" aria-labelledby="fashionDropdown">
+              <ul class="dropdown-menu" aria-labelledby="womenDropdown">
                 <li><a class="dropdown-item" href="{% url 'topwears' %}">Top Wear</a></li>
                 <li><a class="dropdown-item" href="{% url 'bottomwears' %}">Bottom Wear</a></li>
               </ul>
             </li>
           </ul>
-          <form class="d-flex">
+          <form method="get" action="/search" class="d-flex">
             <input
+              name="query"
+              id="search"
               class="form-control me-2"
               type="search"
               placeholder="Search"
@@ -127,7 +129,7 @@
               </li>
               <li class="nav-item mx-2">
                 <a href="{% url 'showcart' %}" class="nav-link text-white"
-                  ><span class="badge bg-danger">{{totalamount}}</span> Cart
+                  ><span class="badge bg-danger">{{total_items}}</span> Cart
                 </a>
               </li>
               {% else %}
