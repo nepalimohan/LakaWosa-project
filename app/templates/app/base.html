@@ -22,6 +22,12 @@
 
     <!--Custom CSS-->
     <link rel="stylesheet" href="{% static 'app/css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'app/css/footer.css' %}" />
+
+
+    {% comment %} gallery css {% endcomment %}
+    <link rel="stylesheet" href="{% static 'app/css/gallery.css' %}" />
+
 
     <title>LakaWosa | {% block title %} {% endblock title %}</title>
   </head>
@@ -30,7 +36,7 @@
       <div class="container">
         <a class="navbar-brand" href="/">
           <!-- <img src="% static 'app/static/app/images/logo-newang.png' %"> -->
-          LakaWosa</a
+          Laka<span class="body">Wosa</span></a
         >
         <button
           class="navbar-toggler"
@@ -52,18 +58,19 @@
               <a
                 class="nav-link dropdown-toggle text-white"
                 href="#"
-                id="menDropdown"
+                id="fashionDropdown"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 Men
               </a>
-              <ul class="dropdown-menu" aria-labelledby="electronicsDropdown">
-                <li>
-                  <a class="dropdown-item" href="{% url 'mobile' %}">Top Wear</a>
-                </li>
-                <li><a class="dropdown-item" href="#">Bottom Wear</a></li>
+              <ul class="dropdown-menu" aria-labelledby="fashionDropdown">
+                <li><a class="dropdown-item" href="{% url 'tshirts' %}">T-Shirts</a></li>
+                <li><a class="dropdown-item" href="{% url 'jeans' %}">Jeans</a></li>
+                <li><a class="dropdown-item" href="{% url 'jackets' %}">Jackets & Hoodies</a></li>
+                <li><a class="dropdown-item" href="{% url 'trousers' %}">Trousers</a></li>
+                <li><a class="dropdown-item" href="{% url 'shoes' %}">Shoes</a></li>
               </ul>
             </li>
             <li class="nav-item dropdown">
@@ -77,9 +84,11 @@
               >
                 Women
               </a>
-              <ul class="dropdown-menu" aria-labelledby="womenDropdown">
-                <li><a class="dropdown-item" href="{% url 'topwears' %}">Top Wear</a></li>
-                <li><a class="dropdown-item" href="{% url 'bottomwears' %}">Bottom Wear</a></li>
+              <ul class="dropdown-menu" aria-labelledby="fashionDropdown">
+                <li><a class="dropdown-item" href="{% url 'tops' %}">Tops</a></li>
+                <li><a class="dropdown-item" href="{% url 'onepiece' %}">One Piece</a></li>
+                <li><a class="dropdown-item" href="{% url 'ladies_pants' %}">Pants</a></li>
+                <li><a class="dropdown-item" href="{% url 'ladies_shoes' %}">Shoes</a></li>
               </ul>
             </li>
           </ul>
@@ -91,6 +100,7 @@
               type="search"
               placeholder="Search"
               aria-label="Search"
+              required
             />
             <button class="btn btn-warning" type="submit">Search</button>
           </form>
@@ -106,7 +116,7 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  {{request.user.username|capfirst}} 
+                {{request.user.username}}<!-- {{request.user.username|capfirst}}  -->
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="profileDropdown">
                   <li>
@@ -117,6 +127,11 @@
                   <li>
                     <a class="dropdown-item" href="{% url 'orders' %}"
                       >Orders</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="{% url 'preorder' %}"
+                      >Preorders</a
                     >
                   </li>
                   <li>
@@ -152,12 +167,14 @@
       </div>
     </nav>
     {% block banner_slider %} {% endblock banner_slider %} {% block livesale %}
-    {% endblock livesale %} {% block main-content %} {% endblock main-content %}
+    {% endblock livesale %} {% block main-content %}
+    <input class="d-none email" name='email' id="email" value="{request.user.email}">
+    {% endblock main-content %}
     {% block payment-gateway %} {% endblock payment-gateway %}
-
+    <br />
     <!-- Start Footer -->
-    <footer class="container-fluid bg-dark text-center p-2 mt-5">
-      <small class="text-white">Copyright &copy; 2021 || Ecommerce || </small>
+    <!-- <footer class="container-fluid bg-dark text-center p-2 mt-5">
+      <small class="text-white">Copyright &copy; 2021 || LakaWosa || </small>
       <img
         src="{% static 'app/images/payment.png' %}"
         alt=""
@@ -165,7 +182,30 @@
         class="img-fluid"
         height="2px"
       />
-    </footer>
+    </footer> -->
+    <footer>
+      <div class="footer">
+          <!-- get help -->
+              <div class="download">
+                  <h3>Download App From</h3>
+                  <div class="d-links">
+                      <a href="#"><img src="{% static 'app/images/android.png' %}" alt="#"></a>
+                      <a href="#"><img src="{% static 'app/images/iphone.png' %}" alt="#"></a>
+                  </div>
+              </div>
+              <div class="social">
+                  <h3>Connect with us:</h3>
+                  <ul class="social-icons" style="justify-content: center;">
+                      <li><a href="https://www.facebook.com/lakawosa.9"><i class="fab fa-facebook"></i></a></li>
+                      <li><a href="https://www.instagram.com/lakawosa/"><i class="fab fa-instagram"></i></a></li>
+                      <!-- <li><a href="#"><i class="fab fa-twitter"></i></a></li> -->
+                  </ul>
+              </div>
+      </div>
+      <div class="copy">
+          <p>Copyright &copy; 2021 || LakaWosa || </p>
+      </div>
+  </footer>
     <!-- End Footer -->
 
     <!-- Jquery -->

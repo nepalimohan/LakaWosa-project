@@ -1,29 +1,49 @@
-{% extends 'app/base.html' %} {% load static %}
-{% block title %}Search Results{% endblock title %}
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Search{% endblock title %}
 {% block main-content %}
-<div class="container my-5">
-    <div class="row">
-      <div class="col-sm-3">
-        <div class="list-group">
-          <h2>Search Results:</h2>
+    <section class="g-gallery">
+        <div class="g-categories">
+            <h2>Categories</h2>
+            <ul>
+                <li class="men"><a href="#">Mens <i class="fas fa-sort-down"></i> </a>
+                    <ul class="c-men hide">
+                        <li><a href="{% url 'tshirts' %}">T-shirts</a></li>
+                        <li><a href="{% url 'jeans' %}">Jeans</a></li>
+                        <li><a href="{% url 'shoes' %}">Shoes</a></li>
+                        <li><a href="{% url 'jackets' %}">Jackets & Hoodies</a></li>
+                        <li><a href="{% url 'trousers' %}">Trousers & Tracks</a></li>
+                        
+                    </ul>
+                </li>
+
+                <li class="women"><a href="#">Women <i class="fas fa-sort-down d-none"></i> </a>
+                    <ul class="c-women hide">
+                        <li><a href="{% url 'tops' %}">Tops</a></li>
+                        <li><a href="{% url 'ladies_pants' %}">Pant</a></li>
+                        <li><a href="{% url 'ladies_shoes' %}">Shoes</a></li>
+                        <li><a href="{% url 'onepiece' %}">One Piece</a></li>
+                    </ul>
+                </li>
+               
+            </ul>
         </div>
-      </div>
-      <div class="col-sm-8">
-        <div class="row">
-          {% for product in searched_product %}
-          <div class="col-sm-4 text-center mb-4">
-          <a href="{% url 'product-detail' product.id %}" class="btn">
-          <div class="item">
-            <img src="{{product.product_image.url}}" alt="" height="300" class="">
-            <div class="fw-bold">{{product.title}}</div>
-            <div class="fw-bold">$ {{product.discounted_price}}</div>
-            <small class="fw-light text-decoration-line-through">{{product.selling_price}}</small>
-          </div>
-          </a>
-          </div>
-          {% endfor %}
+        <div class="product-card-container">
+        {% for product in products %}
+            <div class="g-card">
+                <img src="{{product.product_image.url}}" alt="" class="img-card">
+                <div class="g-card-body">
+                    <h5 class="card-title">
+                        {{product.title}}
+                    </h5>
+                    <div class="g-order">
+                        <p>${{product.discounted_price}}</p>
+                        <p>Stock: {{product.stock}}</p>
+                        <a href="{% url 'product-detail' product.id %}" class="g-btn">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
         </div>
-      </div>
-    </div>
-  </div>
+    </section>
 {% endblock main-content %}

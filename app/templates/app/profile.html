@@ -4,11 +4,14 @@
 {% block main-content %}
 <div class="container my-5">
  <div class="row">
-  <h3>Welcome <span class="text-capitalize">{{request.user}}</span></h3>
+  <h3>Welcome <span class="text">{{request.user}}</span></h3>
   <div class="col-sm-2 border-end">
    <ul class="list-unstyled">
     <li class="d-grid"><a href="{% url 'profile' %}" class="btn {{active}}">Profile</a></li>
     <li class="d-grid"><a href="{% url 'address' %}" class="btn">Address</a></li>
+    <li class="d-grid"><a href="{% url 'orders' %}" class="btn">Orders</a></li>
+    <li class="d-grid"><a href="{% url 'preorder' %}" class="btn">Preorders</a></li>
+    <li class="d-grid"><a href="{% url 'passwordchange' %}" class="btn">Change Password</a></li>
    </ul>
   </div>
   <div class="col-sm-8 offset-sm-1">

@@ -8,26 +8,36 @@
    <img src="{{product.product_image.url}}" alt="" class="img-fluid img-thumbnail">
   </div>
   <div class="col-sm-5 offset-sm-1">
+   <!-- <h2>{{product.category}}</h2> -->
+  
    <h2>{{product.title}}</h2>
    <hr>
    <p>{{product.description}}</p><br>
-   <h4>$ {{product.discounted_price}} <small class="fw-light text-decoration-line-through">$ {{product.selling_price}}</small></h4> <br>
+   <h4>$ {{product.discounted_price}} <small class="fw-light text-decoration-line-through">$ {{product.selling_price}}</small></h4>
    <!-- creating hidden field to pass id of each product -->
+    <h4 class="try">Remaining: <input type="text" id="stock" class="try" value="{{product.stock}}" style="border: none; outline: none; width: 30px;font-size: 20px; text-align: center;" disabled>
+        <!-- <span class="stock">{{product.stock}}</span> -->
+    </h4>
+        <!-- <input type="text" placeholder="Enter Desired Size" name="prod_size" id="prod_size" required> <br /> <br /> -->
 
    {% if request.user.is_authenticated %}
-    {% if item_in_cart %} 
-    <a href="{% url 'showcart' %}" class="btn btn-primary shadow px-5 py-2">Go to Cart</a>
-    {% else %}
-        <form action="/add-to-cart" class="d-inline">
+        {% if item_in_cart %}
+        <form action="/cart" class="d-inline addcart">
+          <button type="submit" class="btn btn-primary shadow px-5 py-2">Go to Cart</button>
+        </form>
+        {% else %}
+            <form action="/add-to-cart" class="addcart d-inline">
+                <input type="hidden" name="prod_id" value="{{product.id}}" id="prod_id">
+                <input type="text" placeholder="Enter Desired Size" name="prod_size" id="prod_size" required> <br /> <br />
+                <button type="submit" class="btn btn-primary shadow px-5 py-2">Add to Cart</button>
+            </form>
+        {% endif %}
+        {% else %}
+        <form action="/add-to-cart" class="addcart d-inline">
             <input type="hidden" name="prod_id" value="{{product.id}}" id="prod_id">
+            <input type="text" placeholder="Enter Desired Size" name="prod_size" id="prod_size" required> <br /> <br />
             <button type="submit" class="btn btn-primary shadow px-5 py-2">Add to Cart</button>
         </form>
-    {% endif %}
-    {% else %}
-    <form action="/add-to-cart" class="d-inline">
-        <input type="hidden" name="prod_id" value="{{product.id}}" id="prod_id">
-        <button type="submit" class="btn btn-primary shadow px-5 py-2">Add to Cart</button>
-    </form>
    {% endif %}
 
    <!-- {% if not request.user.is_authenticated %}
@@ -36,15 +46,36 @@
     <button type="submit" class="btn btn-primary shadow px-5 py-2">Add to Cart</button>
    </form>
     {% endif %} -->
-
-   <a href="{% url 'checkout' %}" class="btn btn-danger shadow px-5 py-2 ms-4">Buy Now</a>
-   <h5 class="mt-5">Available Offers</h5>
+    <form action="/add-to-preorder" class="preorder d-inline d-none">
+        <input type="text" placeholder="Enter Desired Size" name="prod_size" id="prod_size" required> <br /> <br />
+        <input type="hidden" name="prod_id" value="{{product.id}}" id="prod_id">
+        <button type="submit" class="btn btn-primary shadow px-5 py-2">Preorder</button>
+        <!-- <a href="{% url 'checkout' %}" class="btn btn-danger shadow px-5 py-2 ms-4">Buy Now</a> -->
+    </form>
+   <h5 class="mt-5">Special Dasahain/Tihar Offer</h5>
    <ul>
-    <li>Bank Offer 5% Unlimited Cashback on Flipkart Axis Bank Credit</li>
-    <li>Special Price Get extra ₹3000 off (price inclusive of discount)</li>
-    <li>No cost EMI ₹1,667/month. Standard EMI also available</li>
-    <li>Partner Offer ₹2000 Flipkart Gift Card on Every 1000th Transaction with a new Visa Debit/Credit Card</li>
+    <li>Get exclusive discount on every product</li>
+    <li>Minimum delivery charges all around Nepal</li>
    </ul>
+  </div>
+  <div class="m-3">
+    <h2>Products You may Like:</h2>
+    <!-- Slider 1 -->
+    <!-- this jeans is take from key of dictionary defined in ProductView -->
+    <div class="owl-carousel" id="slider1">
+      <!-- {% ifnotequal jeans.category product.category %} -->
+        {% for b in all %}
+          <a href="{% url 'product-detail' b.id %}" class="btn"
+            ><div class="item">
+              <img
+                src="{{b.product_image.url}}"
+                alt=""
+                height="200px"/><span class="fw-bold">{{b.title}}</span><br /><span class="fs-5"
+                >$ {{b.discounted_price}}</span>
+            </div></a>
+        {% endfor %}
+      <!-- {% endifnotequal %} -->
+    </div>
   </div>
  </div>
 </div>

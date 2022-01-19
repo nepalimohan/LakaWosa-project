@@ -1,0 +1,38 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Preorder{% endblock title %}
+{% block main-content %}
+<div class="container my-5">
+ <div class="row">
+ <h3>Welcome <span class="text">{{request.user.username|capfirst}}</span></h3>
+  <div class="col-sm-2 border-end">
+   <ul class="list-unstyled">
+    <li class="d-grid"><a href="{% url 'profile' %}" class="btn">Profile</a></li>
+    <li class="d-grid"><a href="{% url 'address' %}" class="btn">Address</a></li>
+    <li class="d-grid"><a href="{% url 'orders' %}" class="btn">Orders</a></li>
+    <li class="d-grid"><a href="{% url 'preorder' %}" class="btn btn-primary">Preorders</a></li>
+    <li class="d-grid"><a href="{% url 'passwordchange' %}" class="btn">Change Password</a></li>
+   </ul>
+  </div>
+  <div class="col-sm-9 offset-sm-1">
+      <h3>The preorder list:</h3>
+    {% for op in preorder %}
+   <div class="row shadow-sm mb-3">
+       <div class="col-sm-2">
+        <img src="{{op.product.product_image.url}}" alt="" srcset="" class="img-fluid" height="150" width="150">
+       </div>
+       <div class="col-sm-7">
+           <p>Product: {{op.product.title}}</p>
+            <p>Quantity: {{op.quantity}}</p>
+            <p>Size: {{op.size}}</p>
+           <p>Price: {{op.total_cost}}</p>
+       </div>
+       <div class="col-sm-2">
+        <a class="btn btn-sm btn-secondary mr-3 remove-preorder" pid="{{op.product.id}}">Remove item </a>
+       </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
+</div>
+{% endblock main-content %}

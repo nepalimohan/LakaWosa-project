@@ -8,9 +8,13 @@
       {% for item in cart_items %} 
       <div class="card mb-2">
         <div class="card-body">
+          <!-- <p p_id="{{item.product.id}}" value="{{item.product.id}}" class="d-none prod_id"></p> -->
           <h5>Product: {{item.product.title}}</h5>
-          <p>Quantity: {{item.quantity}}</p>
-          <p class="fw-bold">Price: {{item.total_cost}}</p>
+          <p class="d-none">Product ID: {{item.product.id}}</p>
+          <p name="quantity" id="item.id" value="item.id">Quantity: {{item.quantity}}</p>
+          <p class="fw-bold">Price: ${{item.total_cost}}</p>
+          <p class="fw-bold" name="stock" id="item.id" value="item.id">Price: {{item.product.stock}}</p>
+          <!-- <p id=""></p> -->
         </div>
       </div>
       {% endfor %}
@@ -35,6 +39,7 @@
         </div>
         <div class="form-check mt-2 mb-5">
           <input class="form-check-input" type="radio" name="custid" id="custadd{{forloop.counter}}" value="{{address.id}}" />
+          <!-- <input class="form-check-input" type="radio" name="custid" id="custadd{{forloop.counter}}" value="{{address.id}}" /> -->
           <label class="form-check-label fw-bold" for=""> Address: {{forloop.counter}} </label>
         </div>
         {% endfor %}

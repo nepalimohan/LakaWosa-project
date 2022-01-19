@@ -59,6 +59,7 @@ $('.minus-cart').click(function(){
     })
 })
 
+
 $('.remove-cart').click(function(){
     var id = $(this).attr("pid").toString();
     var eml = this
@@ -77,3 +78,41 @@ $('.remove-cart').click(function(){
         }
     })
 })
+$('.remove-preorder').click(function(){
+    var id = $(this).attr("pid").toString();
+    var eml = this
+    $.ajax({
+        type:"GET",
+        url:"/removepreorder",
+        data:{
+            prod_id: id 
+        },
+        success: function(data) {
+            console.log("Delete")
+            // document.getElementById("amount").innerText = data.amount
+            // document.getElementById("totalamount").innerText = data.totalamount
+            eml.parentNode.parentNode.parentNode.parentNode.remove()  
+            // window.locate.reload()
+            // whole rows of divs are deleted using multiple parent node 5:33:17
+        }
+    })
+})
+
+var stock = document.getElementById("stock").value;
+var preOrder = document.querySelector(".preorder");
+var addCart = document.querySelector(".addcart"); 
+console.log(stock)
+console.log("nasdfasdf")
+
+if(stock<1){
+    preOrder.classList.remove("d-none");  
+    addCart.classList.add('d-none');  
+}
+else{
+    addCart.classList.remove("d-none");
+}
+
+
+
+// to reduce stock once customer orders the product
+// var stock = document.getElementById("stock").value;

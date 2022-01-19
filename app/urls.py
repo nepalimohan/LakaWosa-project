@@ -14,6 +14,8 @@ urlpatterns = [
 
     path('cart/', views.show_cart, name='showcart'),
 
+    path('preorder/', views.preorder, name='preorder'),
+
     path('search/', views.search, name='search'),
 
     path('pluscart/', views.plus_cart),
@@ -22,7 +24,11 @@ urlpatterns = [
 
     path('removecart/', views.remove_cart),
 
+    path('removepreorder/', views.remove_preorder),
+
     path('add-to-cart/', views.add_to_cart, name='add-to-cart'),
+
+    path('add-to-preorder/', views.add_to_preorder, name='add-to-preorder'),
 
     path('buy/', views.buy_now, name='buy-now'),
 
@@ -32,9 +38,21 @@ urlpatterns = [
 
     path('orders/', views.orders, name='orders'),
 
-    path('mobile/', views.mobile, name='mobile'),
+    path('trousers/', views.trousers, name='trousers'),
 
-    path('mobile/<slug:data>', views.mobile, name='mobiledata'),
+    path('jackets/', views.jackets, name='jackets'),
+
+
+    path('shoes/', views.shoes, name='shoes'),
+
+    path('onepiece/', views.onepiece, name='onepiece'),
+    path('ladies_pants/', views.ladies_pants, name='ladies_pants'),
+    path('ladies_shoes/', views.ladies_shoes, name='ladies_shoes'),
+    path('tops/', views.tops, name='tops'),
+
+#     path('mobile/<slug:data>', views.mobile, name='mobiledata'),
+
+#     path('laptop/<slug:data>', views.laptop, name='laptopdata'),
 
      path('checkout/', views.checkout, name='checkout'),
      path('paymentdone/', views.payment_done, name='paymentdone'),
@@ -67,7 +85,7 @@ urlpatterns = [
          name='customerregistration'),
 
 
-    path('topwears/', views.topwears, name='topwears'),
-    path('bottomwears/', views.bottomwears, name='bottomwears'),
+    path('tshirts/', views.tshirts, name='tshirts'),
+    path('jeans/', views.jeans, name='jeans'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

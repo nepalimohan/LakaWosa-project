@@ -1,0 +1,48 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}T-shirts For Men{% endblock title %}
+{% block main-content %}
+    <section class="g-gallery">
+        <div class="g-categories">
+            <h2>Categories</h2>
+            <ul>
+                <li class="men"><a href="#">Mens <i class="fas fa-sort-down"></i> </a>
+                    <ul class="c-men hide">
+                        <li><a href="{% url 'tshirts' %}">T-shirts</a></li>
+                        <li><a href="{% url 'jeans' %}">Jeans</a></li>
+                        <li><a href="{% url 'shoes' %}">Shoes</a></li>
+                        <li><a href="{% url 'jackets' %}">Jackets and Hoodies</a></li>
+                        <li><a href="{% url 'trousers' %}">Trousers and Tracks</a></li>
+                        
+                    </ul>
+                </li>
+
+                <li class="women"><a href="#">Women <i class="fas fa-sort-down d-none"></i> </a>
+                    <ul class="c-women hide">
+                        <li><a href="{% url 'tops' %}">Tops</a></li>
+                        <li><a href="{% url 'ladies_pants' %}">Pant</a></li>
+                        <li><a href="{% url 'ladies_shoes' %}">Shoes</a></li>
+                        <li><a href="{% url 'onepiece' %}">One Piece</a></li>
+                    </ul>
+                </li>
+               
+            </ul>
+        </div>
+        <div class="product-card-container">
+        {% for product in tshirts %}
+            <div class="g-card">
+                <img src="{{product.product_image.url}}" alt="" class="img-card">
+                <div class="g-card-body">
+                    <h5 class="card-title">
+                        {{product.title}}
+                    </h5>
+                    <div class="g-order">
+                        <p>${{product.discounted_price}}</p>
+                        <a href="{% url 'product-detail' product.id %}" class="g-btn">Add to cart</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </section>
+{% endblock main-content %}

@@ -1,8 +1,13 @@
+.body{
+    height: 100 vh;
+    color: red;
+}
+
 .owl-carousel .item{
  /* border: 1px solid black; */
  font-size: 24px;
  text-align: center;
- margin-top: 20px;;
+ margin-top: 20px;
 }
 
 .owl-next{
@@ -19,3 +24,7 @@
  font-size: 24px;
  font-weight: bold;
 }
+
+.ow-carousel .item:hover{
+    box-shadow: 2px 2px #f3e7e7a6;
+  }

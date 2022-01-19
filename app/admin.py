@@ -5,7 +5,8 @@ from .models import (
     Customer,
     Product,
     Cart,
-    OrderPlaced
+    OrderPlaced,
+    Preorder
 )
 
 
@@ -18,18 +19,21 @@ class CustomerModelAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductModelAdmin(admin.ModelAdmin):
     list_display = ['id', 'title', 'selling_price',
-                    'discounted_price', 'description', 'brand', 'category', 'product_image']
+                    'discounted_price', 'description', 'brand', 'stock' , 'category', 'product_image']
 
 
 @admin.register(Cart)
 class CartModelAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'product', 'quantity']
+    list_display = ['id', 'user', 'product', 'quantity','size']
 
+@admin.register(Preorder)
+class PreorderModelAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'product', 'quantity','size']
 
 @admin.register(OrderPlaced)
 class OrderPlacedModelAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'customer', 'customer_info' ,'product',
-                    'product_info','quantity', 'ordered_date', 'status']
+                    'product_info','quantity', 'size','ordered_date', 'status']
 
     def customer_info(self,obj):
         link = reverse("admin:app_customer_change",args=[obj.customer.pk])
